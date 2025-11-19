@@ -10,9 +10,10 @@ import {
   Platform,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { COLORS } from '../constants';
-import { storage } from '../storage';
-import { User } from '../types';
+import { COLORS } from '@/constants';
+import { storage } from '@/storage';
+import { User } from '@/types';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 interface RoleSelectionScreenProps {
   onUserSelected: (user: User) => void;
@@ -74,46 +75,57 @@ export const RoleSelectionScreen: React.FC<RoleSelectionScreenProps> = ({ onUser
 
   if (step === 'role') {
     return (
-      <LinearGradient colors={[COLORS.primary, COLORS.primaryDark]} style={styles.container}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
-          <Text style={styles.title}>🦕 Bienvenue sur DinoDuty !</Text>
-          <Text style={styles.subtitle}>Qui es-tu ?</Text>
-
-          <TouchableOpacity
-            style={styles.roleCard}
-            onPress={() => handleRoleSelect('parent')}
-          >
-            <Text style={styles.roleEmoji}>👨‍👩‍👧‍👦</Text>
-            <Text style={styles.roleTitle}>Parent</Text>
-            <Text style={styles.roleDescription}>Créer et valider des tâches</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.roleCard}
-            onPress={() => handleRoleSelect('child')}
-          >
-            <Text style={styles.roleEmoji}>🧒</Text>
-            <Text style={styles.roleTitle}>Enfant</Text>
-            <Text style={styles.roleDescription}>Accomplir des tâches et faire grandir ton dino</Text>
-          </TouchableOpacity>
-
-          {users.length > 0 && (
-            <View style={styles.existingUsers}>
-              <Text style={styles.existingUsersTitle}>Ou continue avec :</Text>
-              {users.map((user) => (
-                <TouchableOpacity
-                  key={user.id}
-                  style={styles.userCard}
-                  onPress={() => handleSelectExistingUser(user)}
-                >
-                  <Text style={styles.userEmoji}>{user.role === 'parent' ? '👨‍👩‍👧‍👦' : '🧒'}</Text>
-                  <Text style={styles.userName}>{user.displayName}</Text>
+            <LinearGradient colors={[COLORS.primary, COLORS.primaryDark]} style={styles.container}>
+                <View style={styles.leftBlock}>
+                    <View style={styles.dinoCircle}>
+                      🦕
+                    </View>
+                    <View>
+                        <Text style={styles.title}>DinoChores</Text>
+                        <Text style={styles.headerSubtitle}>Level 8 explorer</Text>
+                    </View>
+                </View>
+                <TouchableOpacity style={styles.bellWrapper}>
+                    <MaterialCommunityIcons name="bell-outline" size={28} color={COLORS.white} />
+                    <View style={styles.badge} />
                 </TouchableOpacity>
-              ))}
+            </LinearGradient>
+            <View style={styles.secondContainer}>
+                <Text style={styles.subtitle}>Qui es-tu ?</Text>
+                <TouchableOpacity
+                      style={styles.roleCard}
+                      onPress={() => handleRoleSelect('parent')}
+                    >
+                      <Text style={styles.roleEmoji}>👨‍👩‍👧‍👦</Text>
+                      <Text style={styles.roleTitle}>Parent</Text>
+                      <Text style={styles.roleDescription}>Créer et valider des tâches</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                      style={styles.roleCard}
+                      onPress={() => handleRoleSelect('child')}
+                    >
+                      <Text style={styles.roleEmoji}>🧒</Text>
+                      <Text style={styles.roleTitle}>Enfant</Text>
+                      <Text style={styles.roleDescription}>Accomplir des tâches et faire grandir ton dino</Text>
+                </TouchableOpacity>
+                {users.length > 0 && (
+                  <View style={styles.existingUsers}>
+                    <Text style={styles.existingUsersTitle}>Ou continue avec :</Text>
+                    {users.map((user) => (
+                      <TouchableOpacity
+                        key={user.id}
+                        style={styles.userCard}
+                        onPress={() => handleSelectExistingUser(user)}
+                      >
+                        <Text style={styles.userEmoji}>{user.role === 'parent' ? '👨‍👩‍👧‍👦' : '🧒'}</Text>
+                        <Text style={styles.userName}>{user.displayName}</Text>
+                      </TouchableOpacity>
+                    ))}
+                  </View>
+                )}
             </View>
-          )}
         </ScrollView>
-      </LinearGradient>
     );
   }
 
@@ -168,113 +180,170 @@ export const RoleSelectionScreen: React.FC<RoleSelectionScreenProps> = ({ onUser
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  scrollContent: {
-    flexGrow: 1,
-    padding: 20,
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: COLORS.white,
-    textAlign: 'center',
-    marginBottom: 12,
-  },
-  subtitle: {
-    fontSize: 20,
-    color: COLORS.white,
-    textAlign: 'center',
-    marginBottom: 40,
-    opacity: 0.9,
-  },
-  roleCard: {
-    backgroundColor: COLORS.white,
-    borderRadius: 20,
-    padding: 30,
-    marginBottom: 16,
-    alignItems: 'center',
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 5,
-  },
-  roleEmoji: {
-    fontSize: 60,
-    marginBottom: 12,
-  },
-  roleTitle: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    color: COLORS.text,
-    marginBottom: 8,
-  },
-  roleDescription: {
-    fontSize: 16,
-    color: COLORS.textLight,
-    textAlign: 'center',
-  },
-  inputCard: {
-    backgroundColor: COLORS.white,
-    borderRadius: 16,
-    padding: 20,
-    marginBottom: 24,
-  },
-  input: {
-    fontSize: 18,
-    color: COLORS.text,
-  },
-  button: {
-    backgroundColor: COLORS.white,
-    borderRadius: 16,
-    padding: 18,
-    alignItems: 'center',
-  },
-  buttonDisabled: {
-    opacity: 0.5,
-  },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: COLORS.primary,
-  },
-  backButton: {
-    marginTop: 20,
-    alignItems: 'center',
-  },
-  backButtonText: {
-    fontSize: 16,
-    color: COLORS.white,
-    opacity: 0.9,
-  },
-  existingUsers: {
-    marginTop: 40,
-  },
-  existingUsersTitle: {
-    fontSize: 18,
-    color: COLORS.white,
-    textAlign: 'center',
-    marginBottom: 16,
-    opacity: 0.9,
-  },
-  userCard: {
-    backgroundColor: COLORS.white + 'CC',
-    borderRadius: 12,
-    padding: 16,
-    marginBottom: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  userEmoji: {
-    fontSize: 30,
-    marginRight: 12,
-  },
-  userName: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: COLORS.text,
-  },
+    container: {
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingHorizontal: 20,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+    secondContainer: {
+        paddingTop: 10,
+        paddingBottom: 10,
+        paddingHorizontal: 10,
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "space-between",
+    },
+    leftBlock: {
+        flexDirection: "row",
+        alignItems: "flex-start",
+    },
+    dinoCircle: {
+        width: 50,
+        height: 50,
+        borderRadius: 25,
+        backgroundColor: COLORS.white,
+        alignItems: "center",
+        justifyContent: "center",
+        marginRight: 12,
+        marginTop: 10,
+    },
+    bellWrapper: {
+        width: 42,
+        height: 42,
+        borderRadius: 21,
+        backgroundColor: COLORS.primary,
+        justifyContent: "center",
+        alignItems: "center",
+        position: "relative"
+    },
+    badge: {
+        width: 12,
+        height: 12,
+        borderRadius: 6,
+        backgroundColor: COLORS.white,
+        position: "absolute",
+        top: 0,
+        right: 0,
+    },
+    scrollContent: {
+        flexGrow: 1,
+        justifyContent: 'flex-start',
+    },
+    title: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: COLORS.white,
+        textAlign: 'left',
+        marginBottom: 5,
+    },
+    logo: {
+        backgroundColor: COLORS.white,
+        borderRadius: 100,
+        paddingTop: 15,
+        paddingBottom: 15,
+        paddingLeft: 15,
+        paddingRight: 15,
+    },
+    subtitle: {
+        fontSize: 32,
+        color: COLORS.text,
+        textAlign: 'center',
+        marginBottom: 0,
+    },
+    headerSubtitle: {
+        fontSize: 20,
+        color: COLORS.white,
+        textAlign: 'center',
+        marginBottom: 0,
+    },
+    roleCard: {
+        backgroundColor: COLORS.white,
+        borderRadius: 20,
+        padding: 30,
+        marginBottom: 16,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.2,
+        shadowRadius: 8,
+        elevation: 5,
+    },
+    roleEmoji: {
+        fontSize: 60,
+        marginBottom: 12,
+    },
+    roleTitle: {
+        fontSize: 24,
+        fontWeight: 'bold',
+        color: COLORS.text,
+        marginBottom: 8,
+    },
+    roleDescription: {
+        fontSize: 16,
+        color: COLORS.textLight,
+        textAlign: 'center',
+    },
+    inputCard: {
+        backgroundColor: COLORS.white,
+        borderRadius: 16,
+        padding: 20,
+        marginBottom: 24,
+    },
+    input: {
+        fontSize: 18,
+        color: COLORS.text,
+    },
+    button: {
+        backgroundColor: COLORS.white,
+        borderRadius: 16,
+        padding: 18,
+        alignItems: 'center',
+    },
+    buttonDisabled: {
+        opacity: 0.5,
+    },
+    buttonText: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: COLORS.primary,
+    },
+    backButton: {
+        marginTop: 20,
+        alignItems: 'center',
+    },
+    backButtonText: {
+        fontSize: 16,
+        color: COLORS.white,
+        opacity: 0.9,
+    },
+    existingUsers: {
+        marginTop: 40,
+    },
+    existingUsersTitle: {
+        fontSize: 18,
+        color: COLORS.white,
+        textAlign: 'center',
+        marginBottom: 16,
+        opacity: 0.9,
+    },
+    userCard: {
+        backgroundColor: COLORS.white + 'CC',
+        borderRadius: 12,
+        padding: 16,
+        marginBottom: 12,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    userEmoji: {
+        fontSize: 30,
+        marginRight: 12,
+    },
+    userName: {
+        fontSize: 18,
+        fontWeight: '600',
+        color: COLORS.text,
+    },
 });
