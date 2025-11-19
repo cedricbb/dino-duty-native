@@ -92,7 +92,10 @@ export const RoleSelectionScreen: React.FC<RoleSelectionScreenProps> = ({ onUser
                 </TouchableOpacity>
             </LinearGradient>
             <View style={styles.secondContainer}>
-                <Text style={styles.subtitle}>Qui es-tu ?</Text>
+                <View>
+                    <Text style={styles.subtitle}>Qui es-tu ?</Text>
+                </View>
+                <View>
                 <TouchableOpacity
                       style={styles.roleCard}
                       onPress={() => handleRoleSelect('parent')}
@@ -109,6 +112,7 @@ export const RoleSelectionScreen: React.FC<RoleSelectionScreenProps> = ({ onUser
                       <Text style={styles.roleTitle}>Enfant</Text>
                       <Text style={styles.roleDescription}>Accomplir des tâches et faire grandir ton dino</Text>
                 </TouchableOpacity>
+                </View>
                 {users.length > 0 && (
                   <View style={styles.existingUsers}>
                     <Text style={styles.existingUsersTitle}>Ou continue avec :</Text>
@@ -262,7 +266,8 @@ const styles = StyleSheet.create({
     roleCard: {
         backgroundColor: COLORS.white,
         borderRadius: 20,
-        padding: 30,
+        paddingHorizontal: 30,
+        paddingVertical: 10,
         marginBottom: 16,
         alignItems: 'center',
         shadowColor: '#000',
@@ -272,7 +277,7 @@ const styles = StyleSheet.create({
         elevation: 5,
     },
     roleEmoji: {
-        fontSize: 60,
+        fontSize: 32,
         marginBottom: 12,
     },
     roleTitle: {
